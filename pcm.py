@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import time
 import sys
+import struct
 
 class pcm(object):
 
@@ -31,7 +32,18 @@ class pcm(object):
                     rf.write(rbytes)
 
     def soft_volume(self, coefficient = 1.0):
-        print('function: %s is empty' % sys._getframe().f_code.co_name)
+        with open(self.iname, 'rb') as inf:
+            offsets = inf.read(self.offset)
+            with open(self.oname, 'wb') as outf:
+                while True:
+                    by = inf.read(self.format)
+                    if not by: break
+                    res = struct.unpack('<h', by)[0] * coefficient 
+                    s16 = 0x7FFF if round(res) > 0x7FFF else round(res)
+                    s16 = (-0x7FFF - 1) if s16 < -0x7FFF else s16
+                    strs = struct.pack('<h', s16)
+                    outf.write(strs)
+        print('function: %s done' % sys._getframe().f_code.co_name)
 
     def soft_speed(self, speed = 1.0):
         print('function: %s is empty' % sys._getframe().f_code.co_name)
@@ -39,13 +51,10 @@ class pcm(object):
     def samplerate(self, rate = 48000):
         print('function: %s is empty' % sys._getframe().f_code.co_name)
 
+    def wav_info(self):
+        with open(self.iname, 'rb') as inf:
+            print('function: %s is empty' % sys._getframe().f_code.co_name)
 
 if __name__=="__main__":
     pcm = pcm('13_hush_hush.wav', 44)
-    '''
-    start = time.time()
-    pcm.split_left_right()
-    end = time.time()
-    print(end-start)
-    '''
-    pcm.soft_volume()
+    pcm.soft_volume(3)
