@@ -47,7 +47,6 @@ class pcm(object):
         print('function: %s done' % sys._getframe().f_code.co_name)
 
     def soft_speed(self, speed = 2.0):
-        '非常简单的加速两倍播放,抽帧实现'
         with open(self.iname, 'rb') as inf:
             offsets = inf.read(self.offset)
             with open(self.oname, 'wb') as outf:
@@ -92,8 +91,6 @@ class pcm(object):
                 print('channels : ' + str(format_channels[0]))
                 print('format : ' + str(format_format[0]))
                 print('samplerate is: ' + str(format_samplerate[0]))
-            elif riff_type == ('L', 'I', 'S', 'T'):
-                print('list')
             else:
                 print('unrecognized format')
 
