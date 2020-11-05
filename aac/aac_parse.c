@@ -18,7 +18,11 @@ static unsigned char bufferPCM[BUFFER_PCM_MAX_LEN] = {0};
 int get_one_ADTS_frame(unsigned char* buffer, size_t buf_size, unsigned char* pframe ,size_t* framesize)
 {
     size_t size = 0;
+<<<<<<< HEAD
     if(!buffer || !pframe || !framesize)
+=======
+    if(!buffer || !data || !data_size)
+>>>>>>> 7cd2099b53dc62305c358d22ba9d685b282d6805
         return -1;
 
     while(buf_size >= 7){
@@ -39,8 +43,13 @@ int get_one_ADTS_frame(unsigned char* buffer, size_t buf_size, unsigned char* pf
         return -1;
     }
 
+<<<<<<< HEAD
     memcpy(pframe, buffer, size);
     *framesize = size;
+=======
+    memcpy(data, buffer, size);
+    *data_size = size;
+>>>>>>> 7cd2099b53dc62305c358d22ba9d685b282d6805
 
     return 0;
 }
@@ -93,6 +102,7 @@ int main(int argc, char *argv[])
 
     //memset(bufferAAC,0, BUFFER_MAX_LEN);
     int bufsizeAAC = fread(bufferAAC, 1, BUFFER_MAX_LEN, infile);
+<<<<<<< HEAD
 
     if (bufsizeAAC < 4){
         printf("the size of aac file is:%d \n", bufsizeAAC);
@@ -113,6 +123,12 @@ int main(int argc, char *argv[])
         //decode ADTS frame
         pcm_data = (unsigned char*)NeAACDecDecode(hDecoder, &frame_info, frame, size);
 
+=======
+    while(get_one_ADTS_frame(bufferAAC, bufsizeAAC, frames, &size) == 0){
+        //decode ADTS frames
+        pcm_data = (unsigned char*)NeAACDecDecode(hDecoder, &frame_info, frames, size);
+
+>>>>>>> 7cd2099b53dc62305c358d22ba9d685b282d6805
         if(frame_info.error > 0){
             printf("[%d]%s\n",__LINE__, NeAACDecGetErrorMessage(frame_info.error));            
             return -1;
